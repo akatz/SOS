@@ -1,0 +1,3 @@
+Os simulation project
+javac *.java
+java sos
