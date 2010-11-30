@@ -1,3 +1,4 @@
+
 import java.util.LinkedList;
 
 
@@ -58,5 +59,15 @@ public class IOManager {
 			 return newJob;
 		 }
 		 return new Job();
+	 }
+	 public void displayIOTable() {
+		 System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		 System.out.println("| number \t| location \t| size \t| in memory \t|");
+
+		 for(Job entry : IOQueue) {
+			 System.out.println("| " + entry.getNumber() + "\t\t| " + entry.getLocation() + "\t\t| "  + entry.getSize() + "\t|" + entry.isInMemory() + "\t\t|");
+		 }
+		 System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
 	 }
 }

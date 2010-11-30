@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -21,6 +22,7 @@ public class DrumManager {
 		 }
 		 if(job.getDirection().equalsIgnoreCase("out")) {
 			 job.getMemory().removeJob(job.getLocation(), job.getSize());
+			 job.setLocation(-1);
 			 job.setInMemory(false);
 
 		 }
@@ -29,7 +31,7 @@ public class DrumManager {
 	 }
 	 public Job manageDrum(Job drumJob) {
 		 for (Job j : jobs) {
-			 if (j.getLocation() == -1) {
+			 if (j.getLocation() == -1 ) {
 //				 System.out.println("job #" + j.getNumber() + " needs a memory location. \n it is of size" + j.getSize());
 				 if(j.findMemoryLocation()){
 					 System.out.println("found memory location at " +j.getLocation() + "for size " + j.getSize());
@@ -69,4 +71,15 @@ public class DrumManager {
 //		 System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 	 }
 
+	 public void displayDrumQueue() {
+		 System.out.println("Drum Queue looks like :");
+		 for(Job d : drumQueue) {
+
+			 
+			 System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			 System.out.println("| Job # " + d.getNumber() + "\t\t\t\t\t\t|");
+		 }
+		 System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+	 }
 }

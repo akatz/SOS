@@ -1,8 +1,9 @@
+
 import java.util.ArrayList;
 
 
 public class cpuScheduler {
-	private int TIMESLICE = 100;
+	private int TIMESLICE = 25;
 	private Job jobLastRan = new Job();
 	public Job schedule(ArrayList<Job> jobs, int []a, int []p) {
 
@@ -18,7 +19,7 @@ public class cpuScheduler {
 				nextIndex = 0;
 			} 
 			for(int i = nextIndex; i < jobs.size(); i++) {
-				if (jobs.get(i) == jobLastRan || !jobs.get(i).isInMemory() || jobs.get(i).isBlocked()) {
+				if (jobs.get(i) == jobLastRan || !jobs.get(i).isInMemory() || jobs.get(i).isBlocked() || jobs.get(i).isTerminated()) {
 					continue;
 				} else {
 					jobToRun = jobs.get(i);
@@ -30,7 +31,7 @@ public class cpuScheduler {
 					if(jobs.get(i).isBlocked()) {
 //						System.out.println("job " + jobs.get(i).getNumber() + " is blocked");
 					}
-					if (jobs.get(i) == jobLastRan || !jobs.get(i).isInMemory() || jobs.get(i).isBlocked()) {
+					if (jobs.get(i) == jobLastRan || !jobs.get(i).isInMemory() || jobs.get(i).isBlocked() || jobs.get(i).isTerminated()) {
 
 						continue;
 					} else {
@@ -39,7 +40,7 @@ public class cpuScheduler {
 				}
 			}
 			
-			if(jobToRun.isBlocked() || !jobToRun.isInMemory()) {
+			if(jobToRun.isBlocked() || !jobToRun.isInMemory() || jobToRun.isTerminated()) {
 				a[0]=1;
 				return new Job();
 			}

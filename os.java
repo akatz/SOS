@@ -28,7 +28,7 @@ public class os {
 		if(job.getLocation() != -1) {
 			drum.queueJob(job, "in");
 		}
-		
+		cleanJobTable(jobs);
 //		done with interrup handler
 		drumJob = drum.manageDrum(drumJob);
 //		drum.moveToQueue(jobs);
@@ -53,6 +53,11 @@ public class os {
 //		System.out.println("Drum Int");
 		bookKeeper(p[5]);
 //		interrupt handler
+		memory.displayMemoryTable();
+
+		displayJobTable();
+		drum.displayDrumQueue();
+		io.displayIOTable();
 		drum.swapped(jobs);
 		
 //		done with interrupt handler
@@ -68,6 +73,21 @@ public class os {
 		if(runningJob.getMaxCpu() - runningJob.getCurrentTime() == 0) {
 			terminateJob(runningJob);
 		}
+		if(jobs.size() > 5) {
+//		drum.queueJob(runningJob, "out");
+			Job toSwapIn  = new Job();
+			int diff = jobs.indexOf(runningJob ) + 3 - jobs.size();
+			if (diff > 0) {
+				 toSwapIn = jobs.get(diff);
+
+			} else {
+				 toSwapIn = jobs.get( jobs.indexOf(runningJob) + 4);
+
+			}
+				
+			memory.takeoverLocation(runningJob, toSwapIn, jobs);
+
+	}
 		drumJob = drum.manageDrum(drumJob);
 //		drum.moveToQueue(jobs);
 		runningJob = cpu.schedule(jobs, a, p);
@@ -114,13 +134,37 @@ public class os {
 		return new Job();
 	}
 	public static void terminateJob(Job runningJob) {
-		if( !(runningJob.getNumber() == -1)) {
+		if( !(runningJob.getNumber() == -1) && !io.IOQueue.contains(runningJob)) {
 
 			memory.removeJob(runningJob.getLocation(), runningJob.getSize());
 			jobs.remove(runningJob);
 //			runningJob.remove();
 			memory.displayMemoryTable();
+		} else if (!(runningJob.getNumber() == -1)) {
+			runningJob.setTerminated(true);
 		}
 		return;
 	}
+	public static void cleanJobTable(ArrayList<Job> jobs) {
+		ArrayList<Job> toRemove = new ArrayList<Job>();
+		for( Job j : jobs ) {
+			if (j.isTerminated() && !io.IOQueue.contains(j)) {
+				memory.removeJob(j.getLocation(), j.getSize());
+				toRemove.add(j);
+			}
+		}
+		for(Job remove : toRemove) {
+			jobs.remove(remove);
+		}
+	}
+	 public static void displayJobTable() {
+		 System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		 System.out.println("| number \t| location \t| size \t| in memory \t|");
+
+		 for(Job entry : jobs) {
+			 System.out.println("| " + entry.getNumber() + "\t\t| " + entry.getLocation() + "\t\t| "  + entry.getSize() + "\t|" + entry.isInMemory() + "\t\t|");
+		 }
+		 System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+	 }
 }

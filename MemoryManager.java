@@ -1,3 +1,5 @@
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -86,8 +88,22 @@ public class MemoryManager {
 		     } 
 		    }
 	 }
-	 public int takeoverLocation(int size) {
-		 return -1;
+	 public void takeoverLocation(Job runningJob, Job job, ArrayList<Job> jobs) {
+		 Job jobToSwapOut = jobs.get(0);
+		 for (Job j : jobs) {
+			 if (j.isInMemory() && !j.isLatched() && j.getSize() > job.getSize() ) {
+				 if (jobs.indexOf(runningJob) - jobs.indexOf(jobToSwapOut) < jobs.indexOf(j) - jobs.indexOf(runningJob)) {
+					 jobToSwapOut = j;
+				 }
+			 } else {
+				 jobToSwapOut = new Job();
+			 }
+		 }
+		 if(! (jobToSwapOut.getNumber() == -1 )) {
+			 drum.queueJob(jobToSwapOut, "out");
+			 drum.queueJob(job, "in");
+		 }
+
 	 }
 	public DrumManager getDrum() {
 		return drum;

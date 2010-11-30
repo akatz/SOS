@@ -1,4 +1,5 @@
 
+
 public class Job {
 	private int number;
 	private int priority;
@@ -9,6 +10,7 @@ public class Job {
 	private boolean inMemory=false;
 	private boolean latched = false;
 	private boolean blocked = false;
+	private boolean terminated = false;
 	private String direction;
 	private MemoryManager memory;
 
@@ -26,6 +28,12 @@ public class Job {
 
 	}
 	
+	public boolean isTerminated() {
+		return terminated;
+	}
+	public void setTerminated(boolean terminated) {
+		this.terminated = terminated;
+	}
 	public String getDirection() {
 		return direction;
 	}
@@ -92,11 +100,6 @@ public class Job {
 	public void setCurrentTime(int currentTime) {
 		this.currentTime = currentTime;
 	}
-	public void swapin(){
-		if(isInMemory() == false) {
-			memory.takeoverLocation(this.size);
-		}
-	}
 	public void remove() {
 		memory.getDrum().queueJob(this, "out");
 	}
@@ -112,4 +115,5 @@ public class Job {
 	public MemoryManager getMemory() {
 		return memory;
 	}
+
 }

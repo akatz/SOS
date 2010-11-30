@@ -1,0 +1,4 @@
+*.class
+!sos.class
+!jobtype.class
+!Format.class
