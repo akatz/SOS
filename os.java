@@ -73,21 +73,7 @@ public class os {
 		if(runningJob.getMaxCpu() - runningJob.getCurrentTime() == 0) {
 			terminateJob(runningJob);
 		}
-		if(jobs.size() > 5) {
-//		drum.queueJob(runningJob, "out");
-			Job toSwapIn  = new Job();
-			int diff = jobs.indexOf(runningJob ) + 3 - jobs.size();
-			if (diff > 0) {
-				 toSwapIn = jobs.get(diff);
 
-			} else {
-				 toSwapIn = jobs.get( jobs.indexOf(runningJob) + 4);
-
-			}
-				
-			memory.takeoverLocation(runningJob, toSwapIn, jobs);
-
-	}
 		drumJob = drum.manageDrum(drumJob);
 //		drum.moveToQueue(jobs);
 		runningJob = cpu.schedule(jobs, a, p);
@@ -96,7 +82,6 @@ public class os {
 	public static void Svc (int []a, int []p){
 //		System.out.println("Service Int");
 		bookKeeper(p[5]);
-		runningJob.setLatched(true);
 		switch(a[0]){
 			case 5: 
 				terminateJob(runningJob);

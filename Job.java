@@ -1,5 +1,6 @@
 
 
+
 public class Job {
 	private int number;
 	private int priority;
